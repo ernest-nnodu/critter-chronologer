@@ -12,5 +12,5 @@ public class Customer extends User{
 
     private String phoneNumber;
     private String notes;
-    private List<PetDTO> pets;
+    private List<Long> petIds;
 }
