@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
@@ -16,14 +17,27 @@ import java.util.Set;
 @RequestMapping("/user")
 public class UserController {
 
+    private final UserService userService;
+    private final ModelMapper mapper;
+
+    public UserController(UserService userService, ModelMapper mapper) {
+        this.userService = userService;
+        this.mapper = mapper;
+    }
+
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
-        throw new UnsupportedOperationException();
+        return mapper.map(
+                userService.save(customerDTO), CustomerDTO.class);
     }
 
     @GetMapping("/customer")
     public List<CustomerDTO> getAllCustomers(){
-        throw new UnsupportedOperationException();
+        List<Customer> customers = userService.listCustomers();
+
+        return customers.stream()
+                .map(customer -> mapper.map(customer, CustomerDTO.class))
+                .toList();
     }
 
     @GetMapping("/customer/pet/{petId}")
