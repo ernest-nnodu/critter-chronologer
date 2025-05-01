@@ -33,7 +33,7 @@ public class UserController {
 
     @GetMapping("/customer")
     public List<CustomerDTO> getAllCustomers(){
-        List<Customer> customers = userService.listCustomers();
+        List<Customer> customers = userService.getCustomers();
 
         return customers.stream()
                 .map(customer -> mapper.map(customer, CustomerDTO.class))
@@ -47,12 +47,14 @@ public class UserController {
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+        return mapper.map(
+                userService.save(employeeDTO), EmployeeDTO.class);
     }
 
     @PostMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        return mapper.map(
+                userService.getEmployee(employeeId), EmployeeDTO.class);
     }
 
     @PutMapping("/employee/{employeeId}")
