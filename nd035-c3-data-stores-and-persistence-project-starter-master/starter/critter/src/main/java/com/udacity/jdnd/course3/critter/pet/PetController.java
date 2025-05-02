@@ -40,7 +40,7 @@ public class PetController {
     }
 
     @GetMapping("/owner/{ownerId}")
-    public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
+    public List<PetDTO> getPetsByOwner(@PathVariable(name = "ownerId") long ownerId) {
 
         List<Pet> pets = petService.getPets(ownerId);
 

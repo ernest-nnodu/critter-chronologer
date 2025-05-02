@@ -20,6 +20,5 @@ public class Customer extends User{
 
     private String notes;
 
-    @OneToMany(mappedBy = "owner")
-    private List<Pet> pets;
+    private List<Long> petIds;
 }

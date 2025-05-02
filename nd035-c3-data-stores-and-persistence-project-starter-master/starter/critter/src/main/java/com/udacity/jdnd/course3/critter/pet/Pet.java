@@ -15,7 +15,6 @@ public class Pet {
 
     @Id
     @GeneratedValue
-    @Column(name = "pet_id")
     private long id;
 
     @Enumerated(EnumType.STRING)
@@ -23,9 +22,7 @@ public class Pet {
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private Customer owner;
+    private Long ownerId;
 
     private LocalDate birthDate;
 

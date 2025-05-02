@@ -27,7 +27,7 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public List<Pet> getPets(Long ownerId) {
-        return List.of();
+        return petRepository.findAllByOwnerId(ownerId);
     }
 
     @Override
@@ -39,8 +39,6 @@ public class PetServiceImpl implements PetService {
     @Override
     public Pet save(PetDTO petDTO) {
 
-        Customer owner = customerRepository.findById(petDTO.getOwnerId())
-                .orElseThrow();
         return petRepository.save(mapper.map(petDTO, Pet.class));
     }
 }
