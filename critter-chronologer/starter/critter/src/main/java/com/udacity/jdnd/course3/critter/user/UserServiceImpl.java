@@ -5,21 +5,23 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final CustomerRepository customerRepository;
-    private final EmployeeIRepository employeeIRepository;
+    private final EmployeeRepository employeeRepository;
     private final CustomerMapper customerMapper;
     private final ModelMapper employeeMapper;
 
-    public UserServiceImpl(CustomerRepository customerRepository, EmployeeIRepository employeeIRepository,
+    public UserServiceImpl(CustomerRepository customerRepository, EmployeeRepository employeeRepository,
                            CustomerMapper customerMapper, ModelMapper mapper) {
         this.customerRepository = customerRepository;
-        this.employeeIRepository = employeeIRepository;
+        this.employeeRepository = employeeRepository;
         this.customerMapper = customerMapper;
         this.employeeMapper = mapper;
     }
@@ -50,24 +52,42 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Employee> getEmployees() {
-        return employeeIRepository.findAll();
+        return employeeRepository.findAll();
     }
 
     @Override
     public Employee getEmployee(Long employeeId) {
-        return employeeIRepository.findById(employeeId)
+        return employeeRepository.findById(employeeId)
                 .orElseThrow(
                         () -> new EntityNotFoundException("Employee with id not found: " + employeeId));
     }
 
     @Override
     public Employee save(EmployeeDTO employeeDTO) {
-        return employeeIRepository.save(
+        return employeeRepository.save(
                 employeeMapper.map(employeeDTO, Employee.class));
     }
 
     @Override
-    public void setEmployeeAvailability(Set<DayOfWeek> daysAvailable, long employeeId) {
+    public void setEmployeeAvailability(Set<DayOfWeek> daysAvailable, Long employeeId) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Employee with id not found: " + employeeId));
+        employee.setDaysAvailable(daysAvailable);
+        employeeRepository.save(employee);
+    }
+
+    @Override
+    public List<Employee> getEmployeesForService(EmployeeRequestDTO employeeDTO) {
+        Set<EmployeeSkill> serviceSkills = employeeDTO.getSkills();
+        DayOfWeek dayOfService = employeeDTO.getDate().getDayOfWeek();
+
+        List<Employee> candidates = employeeRepository.findByDaysAvailable(dayOfService);
+
+        return candidates.stream()
+                .filter(e -> e.getSkills().containsAll(serviceSkills))
+                .collect(Collectors.toList());
+
 
     }
 }

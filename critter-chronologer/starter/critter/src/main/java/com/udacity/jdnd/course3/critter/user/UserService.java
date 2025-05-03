@@ -13,5 +13,6 @@ public interface UserService {
     List<Employee> getEmployees();
     Employee getEmployee(Long employeeId);
     Employee save(EmployeeDTO employeeDTO);
-    void setEmployeeAvailability(Set<DayOfWeek> daysAvailable, long employeeId);
+    void setEmployeeAvailability(Set<DayOfWeek> daysAvailable, Long employeeId);
+    List<Employee> getEmployeesForService(EmployeeRequestDTO employeeDTO);
 }
