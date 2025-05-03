@@ -10,12 +10,15 @@ public class UserServiceImpl implements UserService {
 
     private final CustomerRepository customerRepository;
     private final EmployeeIRepository employeeIRepository;
-    private final ModelMapper mapper;
+    private final CustomerMapper customerMapper;
+    private final ModelMapper employeeMapper;
 
-    public UserServiceImpl(CustomerRepository customerRepository, EmployeeIRepository employeeIRepository, ModelMapper mapper) {
+    public UserServiceImpl(CustomerRepository customerRepository, EmployeeIRepository employeeIRepository,
+                           CustomerMapper customerMapper, ModelMapper mapper) {
         this.customerRepository = customerRepository;
         this.employeeIRepository = employeeIRepository;
-        this.mapper = mapper;
+        this.customerMapper = customerMapper;
+        this.employeeMapper = mapper;
     }
 
     @Override
@@ -30,9 +33,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Customer getCustomerByPet(long petId) {
+        return customerRepository.findByPetsId(petId)
+                .orElseThrow();
+    }
+
+    @Override
     public Customer save(CustomerDTO customerDTO) {
         return customerRepository.save(
-                mapper.map(customerDTO, Customer.class));
+                customerMapper.convertToEntity(customerDTO));
     }
 
     @Override
@@ -49,6 +58,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Employee save(EmployeeDTO employeeDTO) {
         return employeeIRepository.save(
-                mapper.map(employeeDTO, Employee.class));
+                employeeMapper.map(employeeDTO, Employee.class));
     }
 }

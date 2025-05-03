@@ -2,7 +2,7 @@ package com.udacity.jdnd.course3.critter.pet;
 
 import com.udacity.jdnd.course3.critter.user.Customer;
 import com.udacity.jdnd.course3.critter.user.CustomerRepository;
-import org.modelmapper.ModelMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +12,9 @@ public class PetServiceImpl implements PetService {
 
     private final PetRepository petRepository;
     private final CustomerRepository customerRepository;
-    private final ModelMapper mapper;
+    private final PetMapper mapper;
 
-    public PetServiceImpl(PetRepository petRepository, CustomerRepository customerRepository, ModelMapper mapper) {
+    public PetServiceImpl(PetRepository petRepository, CustomerRepository customerRepository, PetMapper mapper) {
         this.petRepository = petRepository;
         this.customerRepository = customerRepository;
         this.mapper = mapper;
@@ -36,9 +36,18 @@ public class PetServiceImpl implements PetService {
                 .orElseThrow();
     }
 
+    @Transactional
     @Override
     public Pet save(PetDTO petDTO) {
+        Pet petToSave = mapper.convertToEntity(petDTO);
 
-        return petRepository.save(mapper.map(petDTO, Pet.class));
+        Customer owner = customerRepository.findById(petDTO.getOwnerId())
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found with id: " + petDTO.getOwnerId()));
+        petToSave.setOwner(owner);
+
+        Pet savedPet = petRepository.save(petToSave);
+        owner.getPets().add(savedPet);
+
+        return savedPet;
     }
 }

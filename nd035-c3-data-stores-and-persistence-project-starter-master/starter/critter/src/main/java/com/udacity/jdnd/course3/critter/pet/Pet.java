@@ -15,14 +15,16 @@ public class Pet {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private PetType type;
 
     private String name;
 
-    private Long ownerId;
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private Customer owner;
 
     private LocalDate birthDate;
 

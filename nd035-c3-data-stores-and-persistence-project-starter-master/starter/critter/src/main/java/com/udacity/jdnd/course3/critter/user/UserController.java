@@ -18,17 +18,19 @@ import java.util.Set;
 public class UserController {
 
     private final UserService userService;
-    private final ModelMapper mapper;
+    private final CustomerMapper customerMapper;
+    private final ModelMapper employeeMapper;
 
-    public UserController(UserService userService, ModelMapper mapper) {
+    public UserController(UserService userService, CustomerMapper customerMapper, ModelMapper employeeMapper) {
         this.userService = userService;
-        this.mapper = mapper;
+        this.customerMapper = customerMapper;
+        this.employeeMapper = employeeMapper;
     }
 
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
-        return mapper.map(
-                userService.save(customerDTO), CustomerDTO.class);
+        return customerMapper.convertToDto(
+                userService.save(customerDTO));
     }
 
     @GetMapping("/customer")
@@ -36,24 +38,25 @@ public class UserController {
         List<Customer> customers = userService.getCustomers();
 
         return customers.stream()
-                .map(customer -> mapper.map(customer, CustomerDTO.class))
+                .map(customerMapper::convertToDto)
                 .toList();
     }
 
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
-        throw new UnsupportedOperationException();
+        return customerMapper.convertToDto(
+                userService.getCustomerByPet(petId));
     }
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        return mapper.map(
+        return employeeMapper.map(
                 userService.save(employeeDTO), EmployeeDTO.class);
     }
 
     @PostMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
-        return mapper.map(
+        return employeeMapper.map(
                 userService.getEmployee(employeeId), EmployeeDTO.class);
     }
 

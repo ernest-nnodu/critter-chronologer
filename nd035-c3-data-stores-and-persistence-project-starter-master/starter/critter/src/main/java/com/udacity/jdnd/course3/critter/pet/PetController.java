@@ -1,6 +1,5 @@
 package com.udacity.jdnd.course3.critter.pet;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,21 +12,21 @@ import java.util.List;
 public class PetController {
 
     private final PetService petService;
-    private final ModelMapper mapper;
+    private final PetMapper mapper;
 
-    public PetController(PetService petService, ModelMapper mapper) {
+    public PetController(PetService petService, PetMapper mapper) {
         this.petService = petService;
         this.mapper = mapper;
     }
 
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
-        return mapper.map(petService.save(petDTO), PetDTO.class);
+        return mapper.convertToDTO(petService.save(petDTO));
     }
 
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
-        return mapper.map(petService.getPet(petId), PetDTO.class);
+        return mapper.convertToDTO(petService.getPet(petId));
     }
 
     @GetMapping
@@ -35,17 +34,17 @@ public class PetController {
         List<Pet> pets = petService.getPets();
 
         return pets.stream()
-                .map(pet -> mapper.map(pet, PetDTO.class))
+                .map(mapper::convertToDTO)
                 .toList();
     }
 
     @GetMapping("/owner/{ownerId}")
-    public List<PetDTO> getPetsByOwner(@PathVariable(name = "ownerId") long ownerId) {
+    public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
 
         List<Pet> pets = petService.getPets(ownerId);
 
         return pets.stream()
-                .map(pet -> mapper.map(pet, PetDTO.class))
+                .map(mapper::convertToDTO)
                 .toList();
     }
 }
