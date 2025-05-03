@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.pet;
 
+import com.udacity.jdnd.course3.critter.exception.EntityNotFoundException;
 import com.udacity.jdnd.course3.critter.user.Customer;
 import com.udacity.jdnd.course3.critter.user.CustomerRepository;
 import jakarta.transaction.Transactional;
@@ -33,7 +34,8 @@ public class PetServiceImpl implements PetService {
     @Override
     public Pet getPet(Long petId) {
         return petRepository.findById(petId)
-                .orElseThrow();
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Pet with id not found: " + petId));
     }
 
     @Transactional
@@ -42,7 +44,7 @@ public class PetServiceImpl implements PetService {
         Pet petToSave = mapper.convertToEntity(petDTO);
 
         Customer owner = customerRepository.findById(petDTO.getOwnerId())
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found with id: " + petDTO.getOwnerId()));
+                .orElseThrow(() -> new EntityNotFoundException("Customer with id not found: " + petDTO.getOwnerId()));
         petToSave.setOwner(owner);
 
         Pet savedPet = petRepository.save(petToSave);

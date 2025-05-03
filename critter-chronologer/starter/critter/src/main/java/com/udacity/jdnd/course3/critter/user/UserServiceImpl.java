@@ -1,9 +1,12 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.exception.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,7 +32,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Customer getCustomer(Long customerId) {
         return customerRepository.findById(customerId)
-                .orElseThrow();
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Customer with id not found: " + customerId));
     }
 
     @Override
@@ -52,12 +56,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public Employee getEmployee(Long employeeId) {
         return employeeIRepository.findById(employeeId)
-                .orElseThrow();
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Employee with id not found: " + employeeId));
     }
 
     @Override
     public Employee save(EmployeeDTO employeeDTO) {
         return employeeIRepository.save(
                 employeeMapper.map(employeeDTO, Employee.class));
+    }
+
+    @Override
+    public void setEmployeeAvailability(Set<DayOfWeek> daysAvailable, long employeeId) {
+
     }
 }
