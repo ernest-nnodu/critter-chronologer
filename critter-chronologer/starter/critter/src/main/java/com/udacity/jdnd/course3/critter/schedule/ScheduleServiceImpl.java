@@ -43,6 +43,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public List<Schedule> getCustomerSchedules(long customerId) {
+        return scheduleRepository.findAllByPets_Owner_Id(customerId);
+    }
+
+    @Override
     public Schedule createSchedule(ScheduleDTO scheduleDTO) {
 
         Schedule scheduleToSave = scheduleMapper.map(scheduleDTO, Schedule.class);

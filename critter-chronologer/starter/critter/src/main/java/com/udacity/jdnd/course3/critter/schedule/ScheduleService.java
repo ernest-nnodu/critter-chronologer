@@ -6,6 +6,6 @@ public interface ScheduleService {
     List<Schedule> getSchedules();
     List<Schedule> getPetSchedules(long petId);
     List<Schedule> getEmployeeSchedules(long employeeId);
+    List<Schedule> getCustomerSchedules(long customerId);
     Schedule createSchedule(ScheduleDTO scheduleDTO);
-
 }
