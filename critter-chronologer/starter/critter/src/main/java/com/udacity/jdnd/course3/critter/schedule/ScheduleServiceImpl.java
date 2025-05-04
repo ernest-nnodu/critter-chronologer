@@ -38,6 +38,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public List<Schedule> getEmployeeSchedules(long employeeId) {
+        return scheduleRepository.findAllByEmployees_Id(employeeId);
+    }
+
+    @Override
     public Schedule createSchedule(ScheduleDTO scheduleDTO) {
 
         Schedule scheduleToSave = scheduleMapper.map(scheduleDTO, Schedule.class);
