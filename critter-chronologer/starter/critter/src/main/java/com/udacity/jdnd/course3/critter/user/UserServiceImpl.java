@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Customer save(CustomerDTO customerDTO) {
+    public Customer createCustomer(CustomerDTO customerDTO) {
         return customerRepository.save(
                 customerMapper.convertToEntity(customerDTO));
     }
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Employee save(EmployeeDTO employeeDTO) {
+    public Employee createEmployee(EmployeeDTO employeeDTO) {
         return employeeRepository.save(
                 employeeMapper.map(employeeDTO, Employee.class));
     }
@@ -87,7 +87,5 @@ public class UserServiceImpl implements UserService {
         return candidates.stream()
                 .filter(e -> e.getSkills().containsAll(serviceSkills))
                 .collect(Collectors.toList());
-
-
     }
 }

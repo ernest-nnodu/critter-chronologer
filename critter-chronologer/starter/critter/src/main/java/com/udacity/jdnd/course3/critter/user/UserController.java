@@ -30,7 +30,7 @@ public class UserController {
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
         return customerMapper.convertToDto(
-                userService.save(customerDTO));
+                userService.createCustomer(customerDTO));
     }
 
     @GetMapping("/customer")
@@ -51,7 +51,7 @@ public class UserController {
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
         return employeeMapper.map(
-                userService.save(employeeDTO), EmployeeDTO.class);
+                userService.createEmployee(employeeDTO), EmployeeDTO.class);
     }
 
     @PostMapping("/employee/{employeeId}")

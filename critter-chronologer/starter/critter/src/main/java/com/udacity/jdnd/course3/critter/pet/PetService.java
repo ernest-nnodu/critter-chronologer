@@ -7,6 +7,6 @@ public interface PetService {
     List<Pet> getPets();
     List<Pet> getPets(Long ownerId);
     Pet getPet(Long petId);
-    Pet save(PetDTO petDTO);
+    Pet createPet(PetDTO petDTO);
 
 }

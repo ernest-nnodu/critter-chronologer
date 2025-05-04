@@ -40,7 +40,7 @@ public class PetServiceImpl implements PetService {
 
     @Transactional
     @Override
-    public Pet save(PetDTO petDTO) {
+    public Pet createPet(PetDTO petDTO) {
         Pet petToSave = mapper.convertToEntity(petDTO);
 
         Customer owner = customerRepository.findById(petDTO.getOwnerId())

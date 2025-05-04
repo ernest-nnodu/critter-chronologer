@@ -9,10 +9,10 @@ public interface UserService {
     List<Customer> getCustomers();
     Customer getCustomer(Long customerId);
     Customer getCustomerByPet(long petId);
-    Customer save(CustomerDTO customerDTO);
+    Customer createCustomer(CustomerDTO customerDTO);
     List<Employee> getEmployees();
     Employee getEmployee(Long employeeId);
-    Employee save(EmployeeDTO employeeDTO);
+    Employee createEmployee(EmployeeDTO employeeDTO);
     void setEmployeeAvailability(Set<DayOfWeek> daysAvailable, Long employeeId);
     List<Employee> getEmployeesForService(EmployeeRequestDTO employeeDTO);
 }
