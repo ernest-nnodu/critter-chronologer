@@ -1,6 +1,5 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,16 +12,16 @@ import java.util.List;
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
-    private final ModelMapper scheduleMapper;
+    private final ScheduleMapper scheduleMapper;
 
-    public ScheduleController(ScheduleService scheduleService, ModelMapper scheduleMapper) {
+    public ScheduleController(ScheduleService scheduleService, ScheduleMapper scheduleMapper) {
         this.scheduleService = scheduleService;
         this.scheduleMapper = scheduleMapper;
     }
 
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
-        throw new UnsupportedOperationException();
+        return scheduleMapper.convertToDto(scheduleService.createSchedule(scheduleDTO));
     }
 
     @GetMapping
@@ -30,7 +29,7 @@ public class ScheduleController {
         List<Schedule> schedules = scheduleService.getSchedules();
 
         return schedules.stream()
-                .map(schedule -> scheduleMapper.map(schedule, ScheduleDTO.class))
+                .map(scheduleMapper::convertToDto)
                 .toList();
     }
 

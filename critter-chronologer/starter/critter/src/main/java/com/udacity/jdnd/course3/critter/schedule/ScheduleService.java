@@ -4,4 +4,5 @@ import java.util.List;
 
 public interface ScheduleService {
     List<Schedule> getSchedules();
+    Schedule createSchedule(ScheduleDTO scheduleDTO);
 }
