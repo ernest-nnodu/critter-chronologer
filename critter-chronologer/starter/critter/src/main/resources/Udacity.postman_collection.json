@@ -134,7 +134,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8082/user/employee/1",
+					"raw": "http://localhost:8082/user/employee/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -143,7 +143,7 @@
 					"path": [
 						"user",
 						"employee",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -203,7 +203,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"employeeIds\" : [\"1\"],\n  \"petIds\" : [\"1\"],\n  \"date\" : \"2019-12-17\",\n  \"activities\" : [\"PETTING\", \"FEEDING\"]\n}",
+					"raw": "{\n  \"employeeIds\" : [\"2\"],\n  \"petIds\" : [\"1\"],\n  \"date\" : \"2019-12-17\",\n  \"activities\" : [\"PETTING\", \"FEEDING\"]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -329,7 +329,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8082/schedule/customer/2",
+					"raw": "http://localhost:8082/schedule/customer/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -338,7 +338,7 @@
 					"path": [
 						"schedule",
 						"customer",
-						"2"
+						"1"
 					]
 				}
 			},
